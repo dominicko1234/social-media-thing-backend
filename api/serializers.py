@@ -2,9 +2,11 @@ from rest_framework import serializers
 from .models import Group, GroupMessages
 
 class GroupSerializer(serializers.ModelSerializer):
-    model = Group
-    fields = {'id', 'group_name' 'messages'}
+    class Meta:
+        model = Group
+        fields = ['id', 'group_name']
 
 class GroupMessagesSerializer(serializers.ModelSerializer):
-    model = GroupMessages
-    fields = {'date_posted', 'message'}
+    class Meta:
+        model = GroupMessages
+        fields = ['date_posted', 'message']

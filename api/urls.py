@@ -3,5 +3,6 @@ from django.urls import path, include
 from .views import *
 
 urlpatterns = [
-    path('', GroupView.as_view())
+    path('group/', GroupView.as_view()),
+    path('group_messages/', GroupMessagesView.as_view())
 ]
