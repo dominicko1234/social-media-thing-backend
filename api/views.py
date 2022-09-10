@@ -1,10 +1,11 @@
+import re
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .serializers import *
-from .models import *
+from .models import Group, GroupMessages
 
 # Create your views here.
 
@@ -16,7 +17,7 @@ class GroupView(APIView):
     serializer_class = GroupSerializer
 
     def get(self, request):
-        output = [{"id": output.id, "messages": output.messages} for output in Group.objects.order_by('-date_posted')]
+        output = [{"id": output.id, "group_name": output.group_name, "messages": output.messages} for output in Group.objects.order_by('?')]
         return Response(output)
 
     def post(self, request):
@@ -26,3 +27,15 @@ class GroupView(APIView):
 
     def delete(self,request):
         pass
+
+class GroupMessagesView(APIView):
+    serializer_class = GroupMessagesSerializer
+
+    def get(self, request):
+        output = [{"date_posted": output.date_posted, "group_id": output.group_id, "message": output.message} for output in GroupMessages.objects.order_by('-date_posted')]
+        return Response(output)
+
+    def post(self, request):
+        serializer = GroupMessagesSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            return Response(serializer.data)
